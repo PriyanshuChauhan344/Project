@@ -1,0 +1,44 @@
+<!-- templates/index.html -->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Web Vulnerability Scanner</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 30px; }
+      input[type=text]{width:400px;padding:8px}
+      button{padding:8px 12px}
+      .result{border:1px solid #ddd;padding:10px;margin:10px 0;border-radius:6px}
+      .vuln{font-weight:bold}
+      pre{background:#f7f7f7;padding:8px;border-radius:4px}
+    </style>
+  </head>
+  <body>
+    <h2>Web Application Vulnerability Scanner</h2>
+    <form method="post">
+      <input type="text" name="url" placeholder="Enter target URL (e.g. testphp.vulnweb.com)" value="{{ target }}">
+      <button type="submit">Start Scan</button>
+    </form>
+
+    <h3>Results</h3>
+    {% if results %}
+      {% for r in results %}
+        <div class="result">
+          <div class="vuln">{{ r.vuln }}</div>
+          <div><strong>URL:</strong> {{ r.url }}</div>
+          {% if r.payload %}
+            <div><strong>Payload:</strong> <code>{{ r.payload }}</code></div>
+          {% endif %}
+          {% if r.evidence %}
+            <div><strong>Evidence:</strong> {{ r.evidence }}</div>
+          {% endif %}
+          {% if r.evidence_snippet %}
+            <div><strong>Snippet:</strong> <pre style="white-space:pre-wrap;">{{ r.evidence_snippet }}</pre></div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No results yet. Enter a URL and click <em>Start Scan</em>.</p>
+    {% endif %}
+  </body>
+</html>
